@@ -50,6 +50,8 @@ class BlockGrid:
                 if block.check_collision(ball,self.last_bounce_time,0.5,25):
                     block.destroy()
                     self.last_bounce_time = datetime.now()
+                    return True
+        return False
 
     def check_for_win(self):
         for row in range(self.num_of_rows):

@@ -33,6 +33,9 @@ class Block(Turtle):
             "U": ball_pos[1] + 10.5,
             "D": ball_pos[1] - 10.5,
         }
+
+        block_corners = [(block_dims["L"],block_dims["U"]),(block_dims["L"],block_dims["D"]),(block_dims["R"],block_dims["D"]),(block_dims["R"],block_dims["U"])]
+
         if self.alive:
             if (abs(ball_dims["L"] - block_dims["R"]) < sensitivity or abs(ball_dims["R"] - block_dims["L"]) < sensitivity) and (block_dims["D"] < ball_dims["D"] + 5< block_dims["U"] or block_dims["D"] < ball_dims["U"] - 5 < block_dims["U"]):
                 if datetime.now() - last_bounce_time > timedelta(milliseconds=time_delta):
@@ -42,5 +45,10 @@ class Block(Turtle):
                 if datetime.now() - last_bounce_time > timedelta(milliseconds=time_delta):
                     ball.bounce_y()
                 return True
-
+            else:
+                for (x,y) in block_corners:
+                    if ball.distance(x,y) < 10.5 and datetime.now() - last_bounce_time > timedelta(milliseconds=time_delta):
+                        ball.bounce_y()
+                        ball.bounce_x()
+                        return True
         return False
