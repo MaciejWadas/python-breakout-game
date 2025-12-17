@@ -1,6 +1,4 @@
-from turtle import Screen, Turtle
-import time
-
+from turtle import Screen
 from ball import Ball
 from block_grid import BlockGrid
 from paddle import Paddle
@@ -13,18 +11,20 @@ screen.tracer(0)
 
 paddle = Paddle((0,-270),50)
 grid = BlockGrid(800,300,5,35,5,(-395,200))
-ball = Ball()
+ball = Ball((0,-100))
 
 grid.add_blocks()
 grid.check_coords()
 
 screen.listen()
-screen.onkeypress(paddle.move_left, "a")
-screen.onkeypress(paddle.move_right, "d")
+screen.onkeypress(lambda: paddle.move_left(-screen.window_width()/2), "a")
+screen.onkeypress(lambda: paddle.move_right(screen.window_width()/2), "d")
 
 
 game_is_on = True
 while game_is_on:
+    if grid.check_for_win():
+        game_is_on = False
     screen.update()
     ball.move()
 
@@ -41,3 +41,8 @@ while game_is_on:
 
     grid.check_collisions(ball)
 screen.exitonclick()
+
+#TODO-1 Score
+#TODO-2 Corner Collisions
+#TODO-3 Game end screen
+#TODO-4 Timer

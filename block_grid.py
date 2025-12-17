@@ -1,5 +1,6 @@
 from random import choice
 from block import Block
+from datetime import datetime
 
 BOX_SIZES = [2,3,5]
 COLORS = ["red", "blue", "green"]
@@ -12,6 +13,8 @@ class BlockGrid:
         self.offset = offset
         self.position = position
         self.blocks = [[] for i in range(num_of_rows)]
+        self.last_bounce_time = datetime.now()
+
 
     def add_blocks(self):
         for row in range(self.num_of_rows):
@@ -44,6 +47,15 @@ class BlockGrid:
         for row in range(self.num_of_rows):
             for column in range(len(self.blocks[row])):
                 block = self.blocks[row][column]
-                if block.check_collision(ball):
+                if block.check_collision(ball,self.last_bounce_time,0.5,25):
                     block.destroy()
-                    # ball.bounce_y()
+                    self.last_bounce_time = datetime.now()
+
+    def check_for_win(self):
+        for row in range(self.num_of_rows):
+            for column in range(len(self.blocks[row])):
+                block = self.blocks[row][column]
+                if block.alive:
+                    return False
+        return True
+
